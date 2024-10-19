@@ -37,7 +37,7 @@ export function Navbar(props: Props) {
                     title={props.title}
                     icon={props.icon}
                     position={props.position}
-                    otherClasses="w-48"
+                    // otherClasses="w-48"
                     openWalletDialog={openWalletDialog}
                 />
             </div>
