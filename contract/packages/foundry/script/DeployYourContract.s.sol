@@ -2,6 +2,7 @@
 pragma solidity ^0.8.19;
 
 import "../contracts/YourContract.sol";
+import "../contracts/Payright.sol";
 import "./DeployHelpers.s.sol";
 
 contract DeployYourContract is ScaffoldETHDeploy {
@@ -11,6 +12,13 @@ contract DeployYourContract is ScaffoldETHDeploy {
     console.logString(
       string.concat(
         "YourContract deployed at: ", vm.toString(address(yourContract))
+      )
+    );
+
+    Payright payright = new Payright();
+    console.logString(
+      string.concat(
+        "Payright deployed at: ", vm.toString(address(payright))
       )
     );
   }
