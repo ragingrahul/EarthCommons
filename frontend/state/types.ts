@@ -45,4 +45,12 @@ export type Organization = {
   employees?: Employee[]
 } | undefined
 
+export type Event = {
+    transactionId: string
+    eventName: string
+    eventTime: string
+    status: string
+    type: string
+}
+
 export type Address = string
