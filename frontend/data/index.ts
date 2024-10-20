@@ -1,3 +1,5 @@
+import { Event } from "@/state/types";
+
 export const navItems = [
     { name: "About", link: "#about" },
     { name: "Projects", link: "#projects" },
@@ -119,3 +121,27 @@ export const companies = [
     img: "/nextjs.webp",
   },
 ];
+
+export const events:Event[] = [
+  {
+    transactionId: "121",
+    eventName: "Organization Added",
+    eventTime: "1729429161",
+    status: "Success",
+    type: "order1"
+  },
+  {
+    transactionId: "122",
+    eventName: "Employee Added",
+    eventTime: "1729428161",
+    status: "Success",
+    type: "order1"
+  },
+  {
+    transactionId: "123",
+    eventName: "Payment Added",
+    eventTime: "1729428961",
+    status: "Success",
+    type: "order1"
+  }
+]
