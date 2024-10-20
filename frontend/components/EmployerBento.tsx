@@ -3,17 +3,22 @@ import { selectOrganization } from "@/state/selectors";
 import React from "react";
 import { GoHome, GoOrganization, GoPerson } from "react-icons/go";
 import { IoIosTrendingUp, IoIosTrendingDown } from "react-icons/io";
+import { Roboto_Mono } from '@next/font/google'
+const roboto = Roboto_Mono({
+    subsets: ['latin'],
+    weight: ['300', '400', '500', '700',]
+  })
 
 export function EmployerBento() {
     const organization = useAppSelector(selectOrganization)
     return (
         <div className="pt-20 b-5">
-            <div className="h-[180px] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-10 md:gap-2 max-w-7xl mx-auto">
+            <div className={`h-[180px] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-10 md:gap-2 max-w-7xl mx-auto `}>
                 <div
-                    className="relative p-6 flex flex-row  overflow-hidden border border-white/[0.6]  bg-[#181522]/60 backdrop-blur-lg"
+                    className="relative p-6 flex flex-row  overflow-hidden border border-white/[0.6]  bg-[#181522]/60 "
                 >
                     <div className="w-3/5 flex flex-col justify-between">
-                        <p className="text-base font-bold text-white-100 relative z-20">
+                        <p className={`text-base font-bold text-white-100 relative z-20 ${roboto.className}`}>
                             Organization Name
                         </p>
                         <p className="text-[#f8ad5d] mt-4 text-xl font-bold relative z-20">
@@ -27,10 +32,10 @@ export function EmployerBento() {
                     </div>
                 </div>
                 <div
-                    className="relative p-6 flex flex-row  overflow-hidden border border-white/[0.6]  bg-[#181522]/60 backdrop-blur-lg"
+                    className="relative p-6 flex flex-row  overflow-hidden border border-white/[0.6]  bg-[#181522]/60 "
                 >
                     <div className="w-full flex flex-col justify-between">
-                        <p className="text-base font-bold text-neutral-800 dark:text-white-100 relative z-20">
+                        <p className={`text-base font-bold text-white-100 relative z-20 ${roboto.className}`}>
                             Treasury Balance
                         </p>
                         <div>
@@ -49,10 +54,10 @@ export function EmployerBento() {
                     </div>
                 </div>
                 <div
-                    className="relative p-6 flex flex-row overflow-hidden border border-white/[0.6]  bg-[#181522]/60 backdrop-blur-lg"
+                    className="relative p-6 flex flex-row overflow-hidden border border-white/[0.6]  bg-[#181522]/60 "
                 >
                     <div className="w-full flex flex-col justify-between">
-                        <p className="text-base font-bold text-neutral-800 dark:text-white-100 relative z-20">
+                        <p className={`text-base font-bold text-white-100 relative z-20 ${roboto.className}`}>
                             No of Employees
                         </p>
                         <div>
