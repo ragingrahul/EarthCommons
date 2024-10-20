@@ -25,13 +25,13 @@ export function Navbar(props: Props) {
     };
     return (
         <div
-            className={cn("absolute top-3 inset-x-0 mx-auto sm:px-10 px-5 z-50 w-full flex items-center justify-center", props.className)}
+            className={cn("absolute top-10 inset-x-0 max-w-7xl mx-auto z-50 w-full flex items-center justify-center", props.className)}
         >
             <div className="flex justify-between items-center w-full">
                 <img
                     src="/logo2.png"
                     alt="logo"
-                    className="w-[180px] h-[30px]"
+                    className="w-[240px] h-[40px]"
                 />
                 <ShimmerButton
                     title={props.title}

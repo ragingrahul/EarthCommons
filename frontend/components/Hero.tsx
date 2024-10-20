@@ -13,7 +13,7 @@ const roboto = Roboto_Mono({
 const Hero = () => {
 
     return (
-        <div className='pb-20 pt-36'>
+        <div className='pb-5 pt-36'>
             <div>
                 <Spotlight className='-top-40 -left-10 md:-left-32 md:-top-20 h-screen' fill='white' />
                 <Spotlight className='top-10 left-full h-[80vh] w-[50vw]' fill='purple' />
@@ -29,7 +29,7 @@ const Hero = () => {
                         className='text-center text-[40px] md:text-5xl lg:text-6xl'
                         words='Effortless Zero Knowledge Payroll for Happier, Thriving Teams!'
                     />
-                    <p className={`text-center mb-4 md:text-lg lg:text-xl ${roboto.className}`}>
+                    <p className={`text-center mb-4 md:text-lg lg:text-xl text-blue-100 ${roboto.className}`}>
                         Transforming payroll processes for clarity and employee satisfaction!
                     </p>
                 </div>
