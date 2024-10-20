@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Roboto_Mono } from '@next/font/google'
 import {
   createWalletClient,
@@ -8,6 +8,9 @@ import { sepolia } from "viem/chains";
 import { useRouter } from 'next/navigation';
 import { useWallet } from "@/hooks/WalletContext";
 import { formatAddress } from '@/utils/helper';
+import { setConnection } from "@/state/app";
+import { useAppDispatch, useAppSelector } from "@/state/hooks";
+import { selectConnection } from "@/state/selectors";
 
 const roboto = Roboto_Mono({
   subsets: ['latin'],
@@ -26,14 +29,12 @@ export const ShimmerButton = ({
   title, icon, position, handleClick, otherClasses, openWalletDialog
 }: Props) => {
   const router = useRouter();
+  const dispatch = useAppDispatch()
   const {
-    connected,
-    setConnected,
     walletClient,
     setWalletClient,
-    userAddress,
-    setUserAddress,
   } = useWallet();
+  const connection = useAppSelector(selectConnection);
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -48,9 +49,13 @@ export const ShimmerButton = ({
         transport: custom(window.silk as any),
       });
       setWalletClient(newWalletClient);
-      setConnected(true);
+
       const [address] = await newWalletClient.requestAddresses();
-      setUserAddress(address);
+      const connect = {
+        connected: true,
+        userAddress: address
+      } 
+      dispatch(setConnection(connect))
       router.push('/employer');
     } catch (err: any) {
       console.error(err);
@@ -59,24 +64,23 @@ export const ShimmerButton = ({
 
   async function logout(e: React.MouseEvent) {
     e.preventDefault();
-    setConnected(false);
     setWalletClient(undefined);
-    setUserAddress("");
+    dispatch(setConnection(undefined));
 
-    //router.push('/');
+    router.push('/');
   }
 
   return (
     <div className={`relative inline-block text-center ${roboto.className}`}>
       {
-        !connected && !walletClient && userAddress.length === 0 ? (
+        !connection?.connected && connection?.userAddress == undefined ? (
           <div>
             <button
               className={`inline-flex h-10 animate-shimmer items-center justify-center  border border-slate-800 bg-[linear-gradient(110deg,#af7eff,45%,#c1a3f2,55%,#af7eff)] bg-[length:200%_100%] px-4 gap-1 font-medium text-sm text-black transition-colors focus:outline-none focus:ring-1 focus:ring-purple-800 `}
               onClick={() => {
                 if (title == 'Connect') {
                   toggleDropdown()
-                  console.log("Here", isOpen)
+                  console.log("Connect", isOpen)
                 }
               }}
             >
@@ -96,7 +100,7 @@ export const ShimmerButton = ({
             }}
           >
             {position === 'left' && icon}
-            {formatAddress(userAddress)}
+            {connection && formatAddress(connection.userAddress)}
             {position === 'right' && icon}
           </button>
         )
@@ -147,3 +151,4 @@ export const ShimmerButton = ({
 
   )
 }
+
