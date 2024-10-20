@@ -29,7 +29,7 @@ const Hero = () => {
                         className='text-center text-[40px] md:text-5xl lg:text-6xl'
                         words='Effortless Zero Knowledge Payroll for Happier, Thriving Teams!'
                     />
-                    <p className={`text-center mb-4 md:text-lg lg:text-xl ${roboto.className}`}>
+                    <p className={`text-center mb-4 md:text-lg lg:text-xl text-blue-100 ${roboto.className}`}>
                         Transforming payroll processes for clarity and employee satisfaction!
                     </p>
                 </div>

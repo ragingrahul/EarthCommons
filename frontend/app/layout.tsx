@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { ThemeProvider } from "./provider";
+import { ThemeProvider, WalletProviders } from "./provider";
 
 
 const geistSans = localFont({
@@ -26,9 +26,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="bg-purple-200">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-purple-200`}
+        className={`${geistSans.variable} ${geistMono.variable}  bg-purple-200`}
       >
         <ThemeProvider
           attribute="class"
@@ -36,7 +36,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <WalletProviders>
+            {children}
+          </WalletProviders>
         </ThemeProvider>
       </body>
     </html>

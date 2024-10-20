@@ -5,7 +5,7 @@ import { ShimmerButton } from "./aceternityUi/ShimmerButton"
 
 const Footer = () => {
   return (
-    <footer className="w-full pt-20 pb-10" id="contact">
+    <footer className="w-full pt-20 pb-10 " id="contact">
       {/* background grid */}
       <div className="w-full absolute -z-10 left-0 -bottom-72 min-h-96">
         <img
@@ -30,7 +30,7 @@ const Footer = () => {
         />
       </div>
       <div className="flex mt-16 md:flex-row flex-col justify-between items-center">
-        <p className="md:text-base text-sm md:font-normal font-light">
+        <p className="md:text-base text-sm md:font-normal font-light text-white">
           Copyright © 2024 Hyoouka
         </p>
 

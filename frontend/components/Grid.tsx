@@ -4,8 +4,8 @@ import React from "react";
 
 const Grid = () => {
   return (
-    <section id="about">
-      <div className="absolute pointer-events-none inset-0 flex items-start justify-start dark:bg-black-100 bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_1%,black)]"></div>
+    <section id="about" >
+      <div className="absolute pointer-events-none inset-0 flex items-start justify-start bg-black-100 [mask-image:radial-gradient(ellipse_at_center,transparent_1%,black)]"></div>
       <BentoGrid className="w-full py-20">
         {gridItems.map((item, i) => (
           <BentoGridItem
