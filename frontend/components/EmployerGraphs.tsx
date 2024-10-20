@@ -189,7 +189,6 @@ const EmployerGraphs = ({address}:AddressProp) => {
         <div className="py-3">
             <div className="grid grid-cols-3 gap-10 md:gap-2 max-w-7xl mx-auto">
             <div className="absolute pointer-events-none inset-0 flex items-start justify-start bg-black-100 [mask-image:radial-gradient(ellipse_at_center,transparent_60%,black)]"></div>
-
                 <div
                     className="relative p-6 overflow-hidden border  border-white/[0.6]  bg-[#18152217]/60 col-span-2"
                 >
