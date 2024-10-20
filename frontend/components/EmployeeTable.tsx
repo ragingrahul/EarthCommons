@@ -74,7 +74,7 @@ export function DataTableDemo<T extends Employee | Event>({data,columns}:Props<T
     })
 
     return (
-        <div className="w-full">
+        <div className="w-full text-white">
             <div className="flex items-center ">
                 <DropdownMenu>
                     <DropdownMenuContent align="end">
@@ -98,14 +98,14 @@ export function DataTableDemo<T extends Employee | Event>({data,columns}:Props<T
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
-            <div className="rounded-md border">
-                <Table>
-                    <TableHeader>
+            <div className="rounded-md border border-zinc-500/45">
+                <Table className="border-zinc-500/45">
+                    <TableHeader className="text-white border-zinc-500/45">
                         {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id}>
+                            <TableRow key={headerGroup.id} className="hover:bg-black-100/45 border-zinc-500/45">
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <TableHead key={header.id}>
+                                        <TableHead key={header.id} className="text-white">
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
@@ -124,6 +124,7 @@ export function DataTableDemo<T extends Employee | Event>({data,columns}:Props<T
                                 <TableRow
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
+                                    className="hover:bg-black-100/45 border-zinc-500/45" 
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
@@ -155,7 +156,7 @@ export function DataTableDemo<T extends Employee | Event>({data,columns}:Props<T
                 </div>
                 <div className="space-x-2">
                     <Button
-                        variant="outline"
+                        variant="purple"
                         size="sm"
                         onClick={() => table.previousPage()}
                         disabled={!table.getCanPreviousPage()}
@@ -163,7 +164,7 @@ export function DataTableDemo<T extends Employee | Event>({data,columns}:Props<T
                         Previous
                     </Button>
                     <Button
-                        variant="outline"
+                        variant="purple"
                         size="sm"
                         onClick={() => table.nextPage()}
                         disabled={!table.getCanNextPage()}

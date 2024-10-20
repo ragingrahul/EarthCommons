@@ -19,7 +19,7 @@ const config = {
   prefix: "",
   theme: {
   	container: {
-  		center: 'true',
+  		center: true,
   		padding: '2rem',
   		screens: {
   			'2xl': '1400px'
@@ -44,6 +44,7 @@ const config = {
   			purple: {
   				'100': '#513a73',
   				'200': '#2b1f3d',
+				'300': '#af7eff',
   				DEFAULT: '#CBACF9'
   			},
   			border: 'hsl(var(--border))',

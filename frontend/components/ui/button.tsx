@@ -1,6 +1,11 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
+import { Roboto_Mono } from '@next/font/google'
+const roboto = Roboto_Mono({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '700',]
+})
 
 import { cn } from "@/lib/utils"
 
@@ -20,7 +25,7 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         purple:
-          "bg-zinc-100 text-zinc-900 shadow-sm hover:bg-zinc-100/80 dark:bg-[#9477c0] dark:text-zinc-50 dark:hover:bg-[#9477c0a0]",
+          "bg-purple-300 text-black hover:bg-[#b18ded]",
       },
       size: {
         default: "h-9 px-4 py-2",
