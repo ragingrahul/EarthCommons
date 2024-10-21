@@ -26,6 +26,9 @@ const config = {
   		}
   	},
   	extend: {
+		backgroundImage: {
+			'custom-image': "url(../public/purple-bg.jpg)",
+		},
   		colors: {
   			black: {
   				'100': '#000319',
