@@ -28,7 +28,7 @@ const Employee = () => {
 
   //console.log('org', org)
   return (
-    <div className='w-full'>
+    <div className='w-full h-fit'>
         <Navbar 
           title='Disconnect' 
           icon={<IoMdLogOut />}

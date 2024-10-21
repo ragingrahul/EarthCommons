@@ -22,7 +22,7 @@ import { ChartConfig, ChartContainer } from "@/components/ui/chart"
 export const description = "A radial chart with text"
 
 const chartData = [
-  { browser: "safari", visitors: 200, fill: "#af7eff" },
+  { browser: "safari", visitors: 20, fill: "#af7eff" },
 ]
 
 const chartConfig = {
@@ -37,10 +37,10 @@ const chartConfig = {
 
 export function SalaryChart() {
   return (
-    <Card className="flex flex-col mt-20 mb-2">
+    <Card className="flex flex-col mt-20 mb-2 backdrop-blur-sm">
       <CardHeader className="items-start pb-0">
-        <CardTitle>Radial Chart - Text</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Salary Received</CardTitle>
+        <CardDescription>October 2024</CardDescription>
       </CardHeader>
       <CardContent className="flex justify-center pb-0 h-full">
         <ChartContainer
@@ -88,7 +88,7 @@ export function SalaryChart() {
                           className="fill-muted-foreground"
                           style={{ fontSize: '1rem', fontWeight: 'light' }}
                         >
-                          Visitors
+                          ETH
                         </tspan>
                       </text>
                     )

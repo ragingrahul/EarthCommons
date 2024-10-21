@@ -155,7 +155,7 @@ const EmployerTimeline = ({address}:AddressProp) => {
     return (
         <div>
             <div
-                className="relative p-6  overflow-hidden border border-white/[0.6] bg-[#181522]/60 col-span-3"
+                className="relative p-6 h-[298px] overflow-hidden border border-white/[0.6] bg-[#181522]/60 col-span-3"
             >
                 <DataTableDemo data={events} columns={columns} />
             </div>
