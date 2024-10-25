@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { AppStateProvider, ThemeProvider, WalletProviders } from "./provider";
+import { AppStateProvider, ThemeProvider, WalletProviders, EASProvider } from "./provider";
 
 
 const geistSans = localFont({
@@ -37,9 +37,11 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AppStateProvider>
-            <WalletProviders>
-              {children}
-            </WalletProviders>
+              <WalletProviders>
+                <EASProvider >
+                  {children}
+                </EASProvider>
+              </WalletProviders>  
           </AppStateProvider>
         </ThemeProvider>
       </body>

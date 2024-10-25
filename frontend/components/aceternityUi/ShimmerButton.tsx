@@ -38,7 +38,7 @@ export const ShimmerButton = ({
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = () => setIsOpen(!isOpen);
 
-  async function login(e: any) {
+  async function login(e: any,role: string){
     e.preventDefault();
     try {
       // @ts-ignore
@@ -56,7 +56,7 @@ export const ShimmerButton = ({
         userAddress: address
       } 
       dispatch(setConnection(connect))
-      router.push('/employer');
+      router.push('/'+role);
     } catch (err: any) {
       console.error(err);
     }
@@ -70,6 +70,7 @@ export const ShimmerButton = ({
     router.push('/');
   }
 
+  console.log(connection?.userAddress)
   return (
     <div className={`relative inline-block text-center ${roboto.className}`}>
       {
@@ -116,14 +117,16 @@ export const ShimmerButton = ({
             <button
               className={`inline-flex w-full h-10  items-center justify-center bg-[#af7eff] px-4 gap-1 font-medium text-sm text-black transition-colors `}
               onClick={(e)=>{
-                login(e)
+                login(e,"employer")
               }}
             >
               Employeer
             </button>
             <button
               className={`inline-flex w-full h-10  items-center justify-center bg-[#af7eff] px-4 gap-1 font-medium text-sm text-black transition-colors `}
-              onClick={login}
+              onClick={(e)=>{
+                login(e,"employee")
+              }}
             >
               Employee
             </button>
