@@ -119,7 +119,7 @@ const EmployeeCardDetails = ({ employee, totalPayment }: EmployeeProp) => {
                     <div className='flex flex-col h-[280px] my-2 rounded-3xl justify-between w-[300px] p-4  bg-purple-300'>
                         <div className="flex gap-3 items-center">
                             <div className='bg-purple-100 rounded-full p-1'>
-                                <MdPersonOutline size={32} />
+                                <MdPersonOutline size={32} fill='#FFFFFF'/>
                             </div>
                             <span className="font-normal text-3xl text-black ">Card Details</span>
                         </div>
@@ -144,7 +144,7 @@ const EmployeeCardDetails = ({ employee, totalPayment }: EmployeeProp) => {
                                 <span className="font-light">{employee?.salary / 10e8} APT</span>
                             </div>
                         </div>
-                        <button className={`w-full bg-[#7a51bc] p-2 rounded-3xl font-light text-lg hover:bg-[#5c4187] ${roboto.className}`}>
+                        <button className={`w-full text-white bg-[#7a51bc] p-2 rounded-3xl font-light text-lg hover:bg-[#5c4187] ${roboto.className}`}>
                             Verify Employee
                         </button>
                     </div>

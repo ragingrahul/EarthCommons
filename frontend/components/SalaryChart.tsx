@@ -39,7 +39,7 @@ export function SalaryChart() {
   return (
     <Card className="flex flex-col mt-20 mb-2 backdrop-blur-sm">
       <CardHeader className="items-start pb-0">
-        <CardTitle>Salary Received</CardTitle>
+        <CardTitle className="text-white">Salary Received</CardTitle>
         <CardDescription>October 2024</CardDescription>
       </CardHeader>
       <CardContent className="flex justify-center pb-0 h-full">
@@ -57,13 +57,13 @@ export function SalaryChart() {
             <PolarGrid
               gridType="circle"
               radialLines={false}
-              stroke="none"
-              className="first:fill-muted last:fill-background"
+              stroke="fill-black-200"
+              className="first:fill-black-200 last:fill-black"
               polarRadius={[150, 130]}
               fill="#af7eff"
             />
-            <RadialBar dataKey="visitors" background cornerRadius={10} />
-            <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
+            <RadialBar dataKey="visitors" background cornerRadius={10} fill="#af7eff"/>
+            <PolarRadiusAxis tick={false} tickLine={false} axisLine={false} fill="#9768e3">
               <Label
                 content={({ viewBox }) => {
                   if (viewBox && "cx" in viewBox && "cy" in viewBox) {
@@ -77,7 +77,7 @@ export function SalaryChart() {
                         <tspan
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="fill-foreground text-4xl font-bold"
+                          className="fill-white  text-4xl font-bold"
                           style={{ fontSize: '5rem', fontWeight: 'bold' }}
                         >
                           {chartData[0].visitors.toLocaleString()}

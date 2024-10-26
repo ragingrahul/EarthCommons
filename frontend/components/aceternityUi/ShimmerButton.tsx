@@ -8,9 +8,10 @@ import { sepolia } from "viem/chains";
 import { useRouter } from 'next/navigation';
 import { useWallet } from "@/hooks/WalletContext";
 import { formatAddress } from '@/utils/helper';
-import { setConnection } from "@/state/app";
+import { setConnection, setOrganization, setRole } from "@/state/app";
 import { useAppDispatch, useAppSelector } from "@/state/hooks";
 import { selectConnection } from "@/state/selectors";
+import { Role } from '@/state/types';
 
 const roboto = Roboto_Mono({
   subsets: ['latin'],
@@ -38,7 +39,7 @@ export const ShimmerButton = ({
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = () => setIsOpen(!isOpen);
 
-  async function login(e: any,role: string){
+  async function login(e: any,role: Role){
     e.preventDefault();
     try {
       // @ts-ignore
@@ -55,6 +56,7 @@ export const ShimmerButton = ({
         connected: true,
         userAddress: address
       } 
+      dispatch(setRole(role))
       dispatch(setConnection(connect))
       router.push('/'+role);
     } catch (err: any) {
@@ -66,7 +68,8 @@ export const ShimmerButton = ({
     e.preventDefault();
     setWalletClient(undefined);
     dispatch(setConnection(undefined));
-
+    dispatch(setRole('nill'))
+    dispatch(setOrganization(undefined))
     router.push('/');
   }
 

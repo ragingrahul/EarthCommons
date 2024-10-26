@@ -8,6 +8,7 @@ import { RxAvatar } from "react-icons/rx";
 import { setOrganization } from "@/state/app";
 import { useAppDispatch, useAppSelector } from "@/state/hooks";
 import { selectOrganization, selectRole, selectConnection } from "@/state/selectors";
+import { fetchOrganization } from '@/services/read-services';
 
 
 const Employer = () => {
@@ -18,22 +19,28 @@ const Employer = () => {
   useEffect(() => {
     setIsMounted(true);
   }, []);
-  // const {account, connected}=useWallet();
-  // const role = useAppSelector(selectRole);
-  //const org = useAppSelector(selectOrganization);
-  // const isEmployer = role === 'employer'
+  const role = useAppSelector(selectRole);
+  const org = useAppSelector(selectOrganization);
+  const isEmployer = role === 'employer'
 
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     if (!connected){
-  //       // window.location.href = '/'
-  //       console.log(connected,account?.address)
-  //     }
-  //   }
-  //   fetchData()
-  // }, [account?.address, dispatch])
-
-  //console.log('org', org)
+  useEffect(() => {
+    async function fetchData() {
+      if (!connection?.userAddress) return
+      try {
+        // if(role === 'employee'){
+        //   //window.location.href = '/employee'
+        //   router.push('/employee')
+        // }
+        const org = await fetchOrganization(connection?.userAddress)
+        dispatch(setOrganization(org))
+        console.log(connection)
+      } catch (error) {
+        console.error(error)
+      }
+      //setLoading(false)
+    }
+    fetchData()
+  }, [connection?.userAddress, dispatch])
 
   if (!isMounted) {
     return null; // or a loader/spinner
@@ -48,7 +55,7 @@ const Employer = () => {
           icon={<RxAvatar />}
           position='left'
         />
-        {connection && <EmployerHero address={connection?.userAddress} />}
+        {connection && org && <EmployerHero address={connection?.userAddress} />}
       </div>
     </main>
   )

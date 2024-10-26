@@ -25,7 +25,7 @@ export type ThunkConfig = {
 
 export type Connected = {
     connected: boolean,
-    userAddress: string,
+    userAddress: Address,
 } | undefined
 
 export type Employee = {
@@ -53,4 +53,4 @@ export type Event = {
     type: string
 }
 
-export type Address = string
+export type Address = `0x${string}`
