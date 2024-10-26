@@ -45,8 +45,8 @@ export function WalletProviders({ children }: Props) {
     const newWalletClient = createWalletClient({
       chain: network,
       // @ts-ignore
-      // transport: custom(window.silk as any),
-      transport: custom(window.ethereum!)
+      transport: custom(window.silk as any),
+      // transport: custom(window.ethereum!)
     });
     setWalletClient(newWalletClient);
   }, [currentNetwork]);
@@ -95,8 +95,7 @@ export function EASProvider ({ children }: { children: React.ReactNode }) {
         console.log("Eas connected");
       });
     }
-
-  });
+  },[]);
 
   return <EASContext.Provider value={{ eas, isReady: signerReady }}>{children}</EASContext.Provider>;
 };

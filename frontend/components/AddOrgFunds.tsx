@@ -15,6 +15,9 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Roboto_Mono } from '@next/font/google'
+import { useWallet } from "@/hooks/WalletContext"
+import { publicClient } from "@/config/client"
+import { createOrg, fundCompany } from "@/services/write-services"
 
 // import { fundTreasuryMove } from "@/services/write-services"
 // import { useWallet } from "@aptos-labs/wallet-adapter-react"
@@ -28,9 +31,7 @@ const roboto = Roboto_Mono({
 const FormSchema = z.object({
     amount: z.coerce.number({
         invalid_type_error: "Amount must be a number.",
-    }).min(1, {
-        message: "Amount must be at least 1.",
-    }),
+    })
 })
 
 type OrgProp = {
@@ -41,7 +42,7 @@ export function AddOrgFunds({ orgName }: OrgProp) {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
     })
-    //const { signAndSubmitTransaction } = useWallet()
+    const { walletClient } = useWallet()
 
     async function onSubmit(data: z.infer<typeof FormSchema>) {
         // try {
@@ -51,6 +52,11 @@ export function AddOrgFunds({ orgName }: OrgProp) {
         // } catch (error) {
         //   console.error(error)
         // }
+        if(walletClient){
+            const result = await fundCompany(data.amount,walletClient,publicClient);
+            console.log(result)
+        }
+
     }
 
     return (

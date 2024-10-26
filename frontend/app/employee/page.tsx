@@ -6,11 +6,16 @@ import { Navbar } from '@/components/Navbar'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import { selectRole } from '@/state/selectors'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoMdLogOut } from 'react-icons/io'
 
 const Employee = () => {
   const dispatch = useAppDispatch()
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   // const {account, connected}=useWallet();
   // const role = useAppSelector(selectRole);
   // //const org = useAppSelector(selectOrganization);
@@ -25,6 +30,10 @@ const Employee = () => {
   //   }
   //   fetchData()
   // }, [account?.address, dispatch])
+
+  if (!isMounted) {
+    return null; // or a loader/spinner
+  }
 
   //console.log('org', org)
   return (

@@ -40,7 +40,7 @@ export function BarChartCard() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Monthly Salary</CardTitle>
+        <CardTitle className="text-white">Monthly Salary</CardTitle>
         {/* <CardDescription>January - June 2024</CardDescription> */}
       </CardHeader>
       <CardContent>

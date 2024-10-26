@@ -40,7 +40,7 @@ export function EmployerBento() {
                         </p>
                         <div>
                             <p className="text-[#f8ad5d] mt-4 text-xl font-bold relative z-20">
-                                {(organization?.orgTreasury ?? 0)/1e8} APT
+                                {(organization?.orgTreasury ?? 0)/1e18} ETH
                             </p>
                             <p className="text-green-500 text-xs font-light relative z-20 w-full flex flex-row items-center">
                                 <IoIosTrendingUp className="mr-1" /> 0.01% less than yesterday
