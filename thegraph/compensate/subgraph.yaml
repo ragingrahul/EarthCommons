@@ -1,0 +1,38 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Payright
+    network: sepolia
+    source:
+      address: "0x9ACa3538058FcFF0fAE15905CE20e88056619f15"
+      abi: Payright
+      startBlock: 6944322
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CompanyAdded
+        - CompanyFunded
+        - EmployeeAdded
+        - EmployeeVerified
+        - PayoutMade
+      abis:
+        - name: Payright
+          file: ./abis/Payright.json
+      eventHandlers:
+        - event: CompanyAdded(indexed address,string)
+          handler: handleCompanyAdded
+        - event: CompanyFunded(indexed address,uint256)
+          handler: handleCompanyFunded
+        - event: EmployeeAdded(indexed address,indexed address,uint256,string)
+          handler: handleEmployeeAdded
+        - event: EmployeeVerified(indexed address)
+          handler: handleEmployeeVerified
+        - event: PayoutMade(indexed address,uint256)
+          handler: handlePayoutMade
+      file: ./src/payright.ts
