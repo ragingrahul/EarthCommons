@@ -47,7 +47,7 @@ export const BentoGridItem = ({
   titleClassName?: string;
   spareImg?: string;
 }) => {
-  const leftLists = ["ZKP", "Aptos", "Payments"];
+  const leftLists = ["ZKP", "Crypto", "Payments"];
   const rightLists = ["Trustless", "Ease", "Friendly"];
 
   const [copied, setCopied] = useState(false);
