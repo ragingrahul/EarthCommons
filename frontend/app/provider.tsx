@@ -19,6 +19,7 @@ import { selectConnection } from "@/state/selectors";
 import { EAS } from "@ethereum-attestation-service/eas-sdk";
 import easConfig from "@/EAS.config"
 import { useEthersSigner, walletClientToSigner } from "@/hooks/useEthersSigner"
+import { ApolloClient, HttpLink, InMemoryCache, ApolloProvider as ApolloInterProvider } from "@apollo/client";
 
 
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
@@ -27,6 +28,17 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
 
 export function AppStateProvider({ children }: { children: React.ReactNode }) {
   return <ReduxProvider store={store}>{children}</ReduxProvider>
+}
+
+const client = new ApolloClient({
+  link: new HttpLink({
+    uri: 'https://api.studio.thegraph.com/query/92723/compensate/version/latest',
+  }),
+  cache: new InMemoryCache(),
+})
+
+export function ApolloProvider({ children }: { children: React.ReactNode }) {
+  return <ApolloInterProvider client={client}>{children}</ApolloInterProvider>
 }
 
 type Props = {
@@ -83,19 +95,23 @@ export function EASProvider ({ children }: { children: React.ReactNode }) {
     setWalletClient,
   } = useWallet();
     
-  const signer = useEthersSigner();
+  //const signer = useEthersSigner();
   const [signerReady, setSignerReady] = useState(false);
+  // console.log("Inside EAS Provider 1",walletClient)
 
   useEffect(() => {
     if(walletClient){
+      
       walletClientToSigner(walletClient, (signer) => {
+        // console.log("Inside EAS Provider 2",signer)
+
         // Use signer here
         eas.connect(signer);
         setSignerReady(true);
         console.log("Eas connected");
       });
     }
-  },[]);
+  },[walletClient]);
 
   return <EASContext.Provider value={{ eas, isReady: signerReady }}>{children}</EASContext.Provider>;
 };

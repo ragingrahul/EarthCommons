@@ -49,6 +49,7 @@ export const ShimmerButton = ({
         // @ts-ignore
         transport: custom(window.silk as any),
       });
+      await newWalletClient.switchChain({id: sepolia.id})
       setWalletClient(newWalletClient);
 
       const [address] = await newWalletClient.requestAddresses();

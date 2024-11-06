@@ -9,6 +9,7 @@ import { setOrganization } from "@/state/app";
 import { useAppDispatch, useAppSelector } from "@/state/hooks";
 import { selectOrganization, selectRole, selectConnection } from "@/state/selectors";
 import { fetchOrganization } from '@/services/read-services';
+import { AddOrg } from '@/components/AddOrg';
 
 
 const Employer = () => {
@@ -50,12 +51,22 @@ const Employer = () => {
   return (
     <main className='relative bg-purple-200 flex justify-center items-center flex-col overflow-hidden mx-auto sm:px-10 px-5'>
       <div className='max-w-7xl w-full'>
-        <Navbar
-          title='Disconnect'
-          icon={<RxAvatar />}
-          position='left'
-        />
-        {connection && org && <EmployerHero address={connection?.userAddress} />}
+        {connection && org && 
+          <>
+            <Navbar
+              title='Disconnect'
+              icon={<RxAvatar />}
+              position='left'
+            />
+            <EmployerHero address={connection?.userAddress} />
+          </>
+        }
+        {
+          connection && !org && isMounted &&
+          <>
+            <AddOrg />
+          </>
+        }
       </div>
     </main>
   )

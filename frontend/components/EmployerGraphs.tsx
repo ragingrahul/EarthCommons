@@ -23,11 +23,16 @@ import { IoCardSharp } from 'react-icons/io5'
 import { Employee } from '@/state/types'
 import { AddEmployee } from './AddEmployee'
 import { Roboto_Mono } from '@next/font/google'
+import { EMPLOYEE_ADDS, GET_EMPLOYEES } from '@/services/graph-queries'
+import { formatUnits } from 'viem'
+import { paySalary } from '@/services/write-services'
+import { useWallet } from '@/hooks/WalletContext'
+import { publicClient } from '@/config/client'
 
 const roboto = Roboto_Mono({
     subsets: ['latin'],
     weight: ['300', '400', '500', '700',]
-  })
+})
 
 
 
@@ -35,11 +40,12 @@ type AddressProp = {
     address: Address
 }
 
-const EmployerGraphs = ({address}:AddressProp) => {
+const EmployerGraphs = ({ address }: AddressProp) => {
     // const { signAndSubmitTransaction } = useWallet()
-    const [employees,setEmployees] = useState<Employee[]>()
+    const [employees, setEmployees] = useState<Employee[]>()
     const dispatch = useAppDispatch()
     const org = useAppSelector(selectOrganization)
+    const { walletClient } = useWallet()
     // const {toast} = useToast()
 
     const columns: ColumnDef<Employee>[] = [
@@ -63,7 +69,7 @@ const EmployerGraphs = ({address}:AddressProp) => {
             header: "Verified",
             cell: ({ row }) => {
                 const verified = row.getValue("verified") as boolean
-                
+
                 return (
                     <div className="flex">
                         {verified ? (
@@ -83,8 +89,8 @@ const EmployerGraphs = ({address}:AddressProp) => {
             header: () => <div className="text-center">Salary</div>,
             cell: ({ row }) => {
                 const amount = parseFloat(row.getValue("salary"))
-    
-                return <div className="text-center font-medium">{amount} APT</div>
+
+                return <div className="text-center font-medium">{amount} ETH</div>
             },
         },
         {
@@ -106,7 +112,7 @@ const EmployerGraphs = ({address}:AddressProp) => {
             enableHiding: false,
             cell: ({ row }) => {
                 const employee = row.original;
-    
+
                 return (
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -120,22 +126,24 @@ const EmployerGraphs = ({address}:AddressProp) => {
                                 className='gap-2'
                                 onClick={async () => {
                                     try {
-                                      if(!employee.verified){
-                                        // toast({
-                                        //     variant: "destructive",
-                                        //     title: "Payment Failed",
-                                        //     description: "Employee has not yet performed ZK Verification",
-                                        //   })
-                                      }else{
-                                        // const tx = await paySalaryMove(employee.address,signAndSubmitTransaction)
-                                        // console.log(tx)
-                                      }
+                                        // if (!employee.verified) {
+                                        //     // toast({
+                                        //     //     variant: "destructive",
+                                        //     //     title: "Payment Failed",
+                                        //     //     description: "Employee has not yet performed ZK Verification",
+                                        //     //   })
+                                        // } else {
+                                        //     // const tx = await paySalaryMove(employee.address,signAndSubmitTransaction)
+                                        //     // console.log(tx)
+                                        // }
+                                        const tx = await paySalary(employee.address as `0x${string}`,org?.orgAddress as `0x${string}`,walletClient!,publicClient)
+                                        console.log(tx)
                                     } catch (error) {
-                                      console.error(error)
+                                        console.error(error)
                                     }
-                                  }}
+                                }}
                             >
-                             <IoCardSharp />   Pay Your Employee
+                                <IoCardSharp />   Pay Your Employee
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -143,14 +151,14 @@ const EmployerGraphs = ({address}:AddressProp) => {
             },
         },
     ]
-    
 
-    // const { data } = useQuery(GET_EMPLOYEE_MOVE, {
-    //     variables: {
-    //       companyAccount: address,
-    //       accountAddress: address,
-    //     },
-    // })
+
+    const { data } = useQuery(GET_EMPLOYEES, {
+        variables: {
+            companyAddress: address,
+        },
+    })
+    console.log(data)
 
     // useEffect(() => {
     //     const fetchData = async () =>{
@@ -160,7 +168,7 @@ const EmployerGraphs = ({address}:AddressProp) => {
     //                     data.events.map(async (item: any) => {
     //                         const employeeDetails = await getUserByAddress(item.employee_account);
     //                         const isVerified= await fetchEmployeeIsVerified(item.employee_account);
-                
+
     //                         return {
     //                             address: item.employee_account,
     //                             employeeName: employeeDetails.name,
@@ -185,24 +193,49 @@ const EmployerGraphs = ({address}:AddressProp) => {
     //     console.log(data)
     // }, [data, dispatch])
 
+    useEffect(() => {
+        if (org && data) {
+            const employees = data.employeeAddeds.map(
+                (employee: {
+                    employeeAddress: any
+                    companyAddress: any
+                    activity: any
+                    dailyWageWei: any
+                    blockTimestamp: any
+                }) => ({
+                    address: employee.employeeAddress,
+                    employeeName: "Justin",
+                    orgAddress:employee.companyAddress,
+                    activity: employee.activity,
+                    salary: formatUnits(employee.dailyWageWei,18),
+                    daysWorked: Math.floor((Date.now() - Number(employee.blockTimestamp) * 1000) / (24 * 1000 * 60 * 60)),
+                }),
+            )
+            setEmployees(employees)
+            console.log(employees)
+            dispatch(setOrganization({ ...org, employees }))
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data, dispatch])
+
     return (
         <div className="py-3">
             <div className="grid grid-cols-3 gap-10 md:gap-2 max-w-7xl mx-auto">
-            <div className="absolute pointer-events-none inset-0 flex items-start justify-start bg-black-100 [mask-image:radial-gradient(ellipse_at_center,transparent_60%,black)]"></div>
+                <div className="absolute pointer-events-none inset-0 flex items-start justify-start bg-black-100 [mask-image:radial-gradient(ellipse_at_center,transparent_60%,black)]"></div>
                 <div
                     className="relative p-6 overflow-hidden border  border-white/[0.6]  bg-[#18152217]/60 col-span-2"
                 >
                     <div className='w-full flex justify-between items-center mb-2'>
                         <span className={`text-2xl font-bold text-purple-300 ${roboto.className}`}>Employees</span>
                         <AddEmployee />
-                    </div> 
-                    {employees && <DataTableDemo data={employees} columns={columns}/>}
-                    
+                    </div>
+                    {employees && <DataTableDemo data={employees} columns={columns} />}
+
                 </div>
                 <div
                     className="relative p-6  overflow-hidden border  border-white/[0.6]  bg-[#181522]/60  col-span-1"
                 >
-                   <AddOrgFunds orgName={org?.orgName}/>
+                    <AddOrgFunds orgName={org?.orgName} />
                 </div>
             </div>
         </div>

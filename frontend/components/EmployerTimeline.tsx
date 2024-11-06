@@ -8,16 +8,20 @@ import { useQuery } from '@apollo/client'
 // import { EMPLOYEE_ADDED_MOVE, ORG_ADDED_MOVE, ORG_FUNDED_MOVE } from '@/utils/graph-queries'
 import { Address } from '@/state/types'
 import moment from 'moment'
-import { getColorClass } from '@/utils/helper'
+import { formatAddress, getColorClass, extractTransactionId } from '@/utils/helper'
 import {events} from '@/data/index'
 import { Event } from '@/state/types'
+import { EMPLOYEE_ADDS, ORG_ADDED, ORG_FUNDED } from '@/services/graph-queries'
+import { useAppDispatch, useAppSelector } from '@/state/hooks'
+import { selectOrganization } from '@/state/selectors'
+import { formatEther } from 'viem'
 
 export const columns: ColumnDef<Event>[] = [
     {
         accessorKey: "transactionId",
         header: "Transaction Id",
         cell: ({ row }) => (
-            <div className="capitalize">{row.getValue("transactionId")}</div>
+            <div className="capitalize">{formatAddress(extractTransactionId(row.getValue("transactionId")))}</div>
         ),
     },
     {
@@ -34,10 +38,9 @@ export const columns: ColumnDef<Event>[] = [
             const status = row.getValue("status") as string
             const eventName = row.getValue("eventName") as string
             const type = row.original.type 
-            console.log(status,type,eventName, "Here")
             return (
                 <div className="flex text-center w-full justify-center">
-                    <CheckIcon className={`h-5 w-5 ${getColorClass(type)}`} />
+                    <CheckIcon className={`h-5 w-5 text-green-500`} />
                     <span className="ml-2 capitalize">
                         {status}
                     </span>
@@ -75,7 +78,7 @@ export const columns: ColumnDef<Event>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem
-                            onClick={() => window.open(`https://explorer.aptoslabs.com/txn/${event.transactionId}?network=testnet`, '_blank')}
+                            onClick={() => window.open(`https://sepolia.etherscan.io/tx/${extractTransactionId(event.transactionId)}`, '_blank')}
                         >
                             Show Transaction
                         </DropdownMenuItem>
@@ -88,61 +91,51 @@ export const columns: ColumnDef<Event>[] = [
 
 type AddressProp = {
     address: Address
+    data: Event[]
 }
 
 
-const EmployerTimeline = ({address}:AddressProp) => {
-    // const { data:employeesAdded } = useQuery(EMPLOYEE_ADDED_MOVE, {
+const EmployerTimeline = ({address,data}:AddressProp) => {
+    const dispatch = useAppDispatch()
+    const org = useAppSelector(selectOrganization)
+
+    // const { data: employeesAdded } = useQuery(EMPLOYEE_ADDS, {
     //     variables: {
-    //       companyAccount: address,
-    //       accountAddress: address,
+    //     companyAddress: address,
     //     },
-    //     fetchPolicy: 'no-cache'
-    //   })
-    //   const { data:orgAdded } = useQuery(ORG_ADDED_MOVE, {
-    //     variables: {
-    //       companyAccount: address,
-    //       accountAddress: address,
-    //     },
-    //     fetchPolicy: 'no-cache'
-    //   })
-    //   const { data:orgFunded } = useQuery(ORG_FUNDED_MOVE, {
-    //     variables: {
-    //       companyAccount: address,
-    //       accountAddress: address,
-    //     },
-    //     fetchPolicy: 'no-cache'
-    //   })
+    // })
+    // const { data: orgAdded } = useQuery(ORG_ADDED, { variables: { address } })
+    // const { data: orgFunded } = useQuery(ORG_FUNDED, { variables: { address } })
     
     //   console.log(address,employeesAdded,orgAdded,orgFunded)
     //   const data = useMemo(() => {
     //     const results = []
-    //     if (orgAdded && orgAdded.events?.length) {
+    //     if (orgAdded && orgAdded.companyAddeds?.length) {
     //       results.push({
-    //         transactionId:orgAdded.events[0].transaction_version,
+    //         transactionId:orgAdded.companyAddeds[0].id,
     //         eventName: 'Organization Created',
-    //         eventTime: orgAdded.events[0].timestamp,
+    //         eventTime: orgAdded.companyAddeds[0].blockTimestamp,
     //         status:"Success",
     //         type: "order1",
     //       })
     //     }
     //     if (orgFunded) {
-    //       for (const funded of orgFunded.events) {
+    //       for (const funded of orgFunded.companyFundeds) {
     //         results.push({
-    //           transactionId:funded.transaction_version,
-    //           eventName: `Organization Funded ${(funded.amount)/1e8} APT`,
-    //           eventTime: funded.timestamp,
+    //           transactionId:funded.id,
+    //           eventName: `Organization Funded ${formatEther(funded.amount)} ETH`,
+    //           eventTime: funded.blockTimestamp,
     //           status:"Success",
     //           type: "order2",
     //         })
     //       }
     //     }
     //     if (employeesAdded) {
-    //       for (const employee of employeesAdded.events) {
+    //       for (const employee of employeesAdded.employeeAddeds) {
     //         results.push({
-    //           transactionId:employee.transaction_version,
+    //           transactionId:employee.id,
     //           eventName: 'Employee Added',
-    //           eventTime: employee.timestamp,
+    //           eventTime: employee.blockTimestamp,
     //           status:"Success",
     //           type: "order3",
     //         })
@@ -157,7 +150,7 @@ const EmployerTimeline = ({address}:AddressProp) => {
             <div
                 className="relative p-6 h-[298px] overflow-hidden border border-white/[0.6] bg-[#181522]/60 col-span-3"
             >
-                <DataTableDemo data={events} columns={columns} />
+                <DataTableDemo data={data} columns={columns} />
             </div>
         </div>
     )

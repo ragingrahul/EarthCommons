@@ -15,13 +15,12 @@ export const EMPLOYEE_ADDS = gql`
 
 export const GET_EMPLOYEES = gql`
   query Employees($companyAddress: String!) {
-    employees(where: { companyAddress: $companyAddress }) {
+    employeeAddeds(where: { companyAddress: $companyAddress }) {
       id
       activity
       employeeAddress
       companyAddress
       dailyWageWei
-      lastPayed
       blockTimestamp
     }
   }
@@ -48,3 +47,14 @@ export const ORG_FUNDED = gql`
     }
   }
 `
+
+export const PAYOUT_MADE = gql`
+  query PayoutMade($address: Bytes!, $limit: Int) {
+    payoutMades(where: {employeeAddress: $address}, first: $limit){
+      id
+      employeeAddress
+      amount
+      blockTimestamp
+    }
+  }
+` 
