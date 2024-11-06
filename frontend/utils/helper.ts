@@ -5,6 +5,12 @@ export function formatAddress(address: string, prefixLength = 4, suffixLength = 
     return `${address.slice(0, prefixLength)}...${address.slice(-suffixLength)}`;
 }
 
+export function extractTransactionId(hexString: string): string {
+    return hexString.startsWith("0x") ? hexString.slice(0, 66) : hexString.slice(0, 64);
+}
+  
+  
+
 export const getColorClass = (type: string) => {
     switch (type) {
         case 'order1':

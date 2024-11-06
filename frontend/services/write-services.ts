@@ -5,8 +5,9 @@ import { useWallet } from '@/hooks/WalletContext'
 import { PublicClient, WalletClient } from 'viem'
 import abi from '@/config/payrollAbi'
 import { sepolia } from 'viem/chains'
+import { parseEther } from 'viem'
 
-export async function createOrg(name: string, walletClient:WalletClient, publicClient: PublicClient) {
+export async function createOrg(name: string, walletClient: WalletClient, publicClient: PublicClient) {
     const [address] = await walletClient.requestAddresses();
     const { request } = await publicClient.simulateContract({
         account: address,
@@ -42,21 +43,21 @@ export async function fundCompany(amountInEth: number,walletClient: WalletClient
     }
   }
 
-// export async function addNewEmployee(address: Address, salary: number, activity: string) {
-//     const {walletClient} = useWallet()
-//     const [signerAddress] = await walletClient!.requestAddresses();
-//     const { request } = await publicClient.simulateContract({
-//         account: signerAddress,
-//         address: PAYROLL_CONTRACT_ADDRESS,
-//         abi: abi,
-//         functionName: 'addEmployee',
-//         args: [`0x${address}`, BigInt(salary), activity],
+export async function addNewEmployee(address: Address, salary: number, activity: string, walletClient: WalletClient, publicClient: PublicClient) {
 
-//     })
-//     const result = await walletClient!.writeContract(request)
-//     console.log('add new Employee transaction', result)
-//     return result
-// }
+    const [signerAddress] = await walletClient.requestAddresses();
+    const { request } = await publicClient.simulateContract({
+        account: signerAddress,
+        address: PAYROLL_CONTRACT_ADDRESS,
+        abi: abi,
+        functionName: 'addEmployee',
+        args: [address, parseEther(String(salary)), activity],
+
+    })
+    const result = await walletClient!.writeContract(request)
+    console.log('add new Employee transaction', result)
+    return result
+}
 
 // export async function verifyEmployee(address: Address) {
 //     const result = await writeContract(config, {
@@ -70,18 +71,18 @@ export async function fundCompany(amountInEth: number,walletClient: WalletClient
 //     return result
 // }
 
-// export async function paySalary(address: Address, orgAddress: Address) {
-//     const {walletClient} = useWallet()
-//     const [signerAddress] = await walletClient!.requestAddresses();
-//     const { request } = await publicClient.simulateContract({
-//         account: signerAddress,
-//         address: PAYROLL_CONTRACT_ADDRESS,
-//         abi: abi,
-//         functionName: 'payout',
-//         args: [`0x${address}`,`0x${orgAddress}`],
+export async function paySalary(address: Address, orgAddress: Address, walletClient: WalletClient, publicClient: PublicClient) {
+ 
+    const [signerAddress] = await walletClient.requestAddresses();
+    const { request } = await publicClient.simulateContract({
+        account: signerAddress,
+        address: PAYROLL_CONTRACT_ADDRESS,
+        abi: abi,
+        functionName: 'payout',
+        args: [address,orgAddress],
 
-//     })
-//     const result = await walletClient!.writeContract(request)
-//     console.log('payout to employee', result)
-//     return result
-// }
+    })
+    const result = await walletClient!.writeContract(request)
+    console.log('payout to employee', result)
+    return result
+}

@@ -27,6 +27,9 @@ const roboto = Roboto_Mono({
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { addNewEmployee } from "@/services/write-services";
+import { useWallet } from "@/hooks/WalletContext";
+import { publicClient } from "@/config/client";
 
 const FormSchema = z.object({
     employeeName: z.string().min(1, {
@@ -40,13 +43,11 @@ const FormSchema = z.object({
     }),
     dailySalary: z.coerce.number({
         invalid_type_error: "Amount must be a number.",
-    }).min(1, {
-    message: "Amount must be at least 1.",
-    }),
+    })
 });
 
 export function AddEmployee() {
-    // const { account, signAndSubmitTransaction } = useWallet()
+    const { walletClient } = useWallet()
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -58,15 +59,13 @@ export function AddEmployee() {
     
       // Handle form submission
       async function onSubmit(data: z.infer<typeof FormSchema>) {
-        // const commitment = generateCommitment(data.employeeName, data.jobTitle, data.walletAddress);
-        // try {
-        //     const result = await addEmployeeAPI(data.employeeName, data.jobTitle, data.walletAddress);
-        //     const response= await addEmployeeMove(data.walletAddress,commitment,data.dailySalary,signAndSubmitTransaction);
-        //     console.log(response.hash,result)
-        //     window.location.reload();
-        //   } catch (error) {
-        //     console.error(error)
-        //   }
+        try {
+            const response= await addNewEmployee(data.walletAddress as `0x${string}`,data.dailySalary,data.jobTitle,walletClient!,publicClient);
+            console.log(response);
+            window.location.reload();
+          } catch (error) {
+            console.error(error)
+          }
         }
 
     return (
@@ -74,7 +73,7 @@ export function AddEmployee() {
             <DialogTrigger asChild>
                 <Button variant="purple" className={roboto.className}>Add Employee</Button>
             </DialogTrigger>
-            <DialogContent className="w-[900px] ">
+            <DialogContent className="w-[900px] bg-[#161021]">
                 <DialogHeader>
                     <DialogTitle className="text-purple">New Employee</DialogTitle>
                     <DialogDescription>
