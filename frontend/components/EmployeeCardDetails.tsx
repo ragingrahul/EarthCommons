@@ -181,7 +181,7 @@ const EmployeeCardDetails = ({ employee, totalPayment }: EmployeeProp) => {
                     <div className='flex flex-col'>
                         <div className="w-[440px] h-[280px] rounded-3xl  bg-purple-300 my-2 relative" >
                             {/* <div className="h-28 w-44 relative flex justify-end items-end"> */}
-                            <Image src="/aptos-white.png" alt='card chip' width={50} height={100} className='absolute top-4 left-4' />
+                            <Image src="/c-logo-1.png" alt='card chip' width={70} height={150} className='absolute top-4 left-4' />
                             {/* </div> */}
                             <h1 className={`text-black absolute bottom-24 z-10 left-4 font-light text-2xl ${roboto.className}`}>{formatAddress(employee?.address)}</h1>
                             <div className={`w-full h-[80px] text-white absolute flex justify-between items-center p-4 bottom-0 bg-purple-100 rounded-b-3xl ${roboto.className}`}>
@@ -189,7 +189,7 @@ const EmployeeCardDetails = ({ employee, totalPayment }: EmployeeProp) => {
                                     {employee?.employeeName || "Justin"}
                                 </div>
                                 <div>
-                                    21/24
+                                    06/24
                                 </div>
                             </div>
                         </div>
